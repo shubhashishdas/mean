@@ -1,0 +1,14 @@
+<mat-card>
+    <form [formGroup]="companyForm" (ngSubmit)="addCompany()">
+        <mat-form-field>
+            <input matInput placeholder="Company Name" formControlName="companyName">
+        </mat-form-field>
+
+        <mat-form-field>
+            <textarea matInput placeholder="Location" formControlName="address"></textarea>
+        </mat-form-field>
+        <div class="button-row text-center">
+            <button mat-flat-button color="accent">Save</button>
+        </div>
+    </form>
+</mat-card>

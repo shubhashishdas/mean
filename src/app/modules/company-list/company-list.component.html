@@ -1,0 +1,14 @@
+<mat-card>
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let company of companies">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ company.companyName}}
+                </mat-panel-title>
+
+            </mat-expansion-panel-header>
+
+            {{ company.address}}
+        </mat-expansion-panel>
+    </mat-accordion>
+</mat-card>
