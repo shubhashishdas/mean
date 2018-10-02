@@ -9,6 +9,10 @@
             </mat-expansion-panel-header>
 
             {{ company.address}}
+            <mat-action-row>
+                <a mat-button color="warn" [routerLink]="['/edit', company.id]">Edit</a>
+                <button mat-button color="primary" (click)="onDelete(company.id)">Delete</button>
+            </mat-action-row>
         </mat-expansion-panel>
     </mat-accordion>
 </mat-card>

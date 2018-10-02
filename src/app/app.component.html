@@ -1,7 +1,7 @@
+<mat-progress-bar mode="indeterminate" color="primary" *ngIf="isLoading"></mat-progress-bar>
 <app-header></app-header>
 <main>
   <div class="container">
-    <app-company></app-company>
-    <app-company-list></app-company-list>
+    <router-outlet></router-outlet>
   </div>
 </main>
