@@ -9,30 +9,39 @@ import { Router } from "@angular/router";
 })
 export class CompanyService {
     company: Company[] = [];
-    companyModified = new EventEmitter<Company[]>();
+    companyModified = new EventEmitter<{ totalRecords: number, companies: Company[] }>();
 
     constructor(
         private http: HttpClient,
         private router: Router
     ) { }
 
-    getCompanyList() {
-        this.http.get('http://localhost:3000/api/companies')
+    getCompanyList(currentPage: number, pageSize: number) {
+        const queryParams = `?pageSize=${pageSize}&page=${currentPage}`;
+        this.http.get('http://localhost:3000/api/companies' + queryParams)
             .pipe(
-                map((response: any) => {
-                    return response.data.map(company => {
-                        return {
-                            id: company._id,
-                            companyName: company.companyName,
-                            address: company.address,
-                            imagePath: company.imagePath
-                        }
-                    })
+                map((response: { isSuccess: boolean, totalRecords: number, data: Company[] }) => {
+                    return {
+                        companies: response.data.map((company: any) => {
+                            return {
+                                id: company._id,
+                                companyName: company.companyName,
+                                address: company.address,
+                                imagePath: company.imagePath
+                            }
+                        }),
+                        totalRecords: response.totalRecords
+                    };
                 })
             )
             .subscribe((data: any) => {
-                this.company = data;
-                this.companyModified.emit(this.company);
+                this.company = data.companies;
+                this.companyModified.emit(
+                    {
+                        totalRecords: data.totalRecords,
+                        companies: [...this.company]
+                    }
+                );
             }, error => {
                 console.log('Something went wrong');
             });
@@ -83,12 +92,6 @@ export class CompanyService {
 
     deleteCompany(companyId: string) {
         console.log('In delete company function');
-        this.http.delete('http://localhost:3000/api/companies/' + companyId).subscribe((response) => {
-            let updateData = this.company.filter(ele => ele.id != companyId);
-            this.company = updateData;
-            this.companyModified.emit([...this.company]);
-        }, error => {
-            console.log('Something went wrong');
-        });
+        return this.http.delete('http://localhost:3000/api/companies/' + companyId);
     }
 }

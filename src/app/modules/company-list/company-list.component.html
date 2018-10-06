@@ -22,4 +22,6 @@
             </mat-action-row>
         </mat-expansion-panel>
     </mat-accordion>
+    <mat-paginator [length]="totalRecords" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="pageChange($event)">
+    </mat-paginator>
 </mat-card>

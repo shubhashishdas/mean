@@ -24,11 +24,27 @@ const storage = multer.diskStorage({
 });
 
 router.get('', (req, res, next) => {
-    Company.find().then((companies) => {
-        res.status(200).json({ isSuccess: true, data: companies });
-    }).catch(() => {
-        res.status(400).json({ isSuccess: false });
-    })
+    const pageSize = +req.query.pageSize;
+    const currentPage = +req.query.page;
+    const companyQuery = Company.find();
+    if (pageSize && currentPage) {
+        companyQuery
+            .skip(pageSize * (currentPage - 1))
+            .limit(pageSize);
+    }
+    companyQuery
+        .then((companies) => {
+            return Company.count().then((count) => {
+                return [count, companies];
+            })
+        })
+        .then((result) => {
+            res.status(200).json({ isSuccess: true, totalRecords: result[0], data: result[1] });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(400).json({ isSuccess: false });
+        })
 });
 
 router.post('/add', multer({ storage: storage }).single('image'), (req, res, next) => {

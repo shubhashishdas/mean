@@ -10,6 +10,10 @@ import { ConfigService } from '../../services/config.service';
 })
 export class CompanyListComponent implements OnInit {
   companies: Company[] = [];
+  currentPage: number = 1;
+  pageSize: number = 2;
+  pageSizeOptions: number[] = [1, 2, 5, 10];
+  totalRecords: number = 0;
   constructor(
     private companyService: CompanyService,
     private configService: ConfigService
@@ -17,17 +21,27 @@ export class CompanyListComponent implements OnInit {
 
   ngOnInit() {
     this.companyService.companyModified.subscribe(result => {
-      this.companies = result;
+      this.companies = result.companies;
+      this.totalRecords = result.totalRecords;
     });
     this.getCompanyList();
   }
 
   getCompanyList() {
-    this.companyService.getCompanyList();
+    this.companyService.getCompanyList(this.currentPage, this.pageSize);
   }
 
   onDelete(companyId: string) {
-    this.companyService.deleteCompany(companyId);
+    this.companyService.deleteCompany(companyId).subscribe((result: { isSuccess: boolean }) => {
+      if (result.isSuccess) {
+        this.companyService.getCompanyList(this.currentPage, this.pageSize);
+      }
+    });
   }
 
+  pageChange(event) {
+    this.pageSize = event.pageSize;
+    this.currentPage = event.pageIndex + 1;
+    this.companyService.getCompanyList(this.currentPage, this.pageSize);
+  }
 }
