@@ -3,15 +3,22 @@
         <mat-expansion-panel *ngFor="let company of companies">
             <mat-expansion-panel-header>
                 <mat-panel-title>
+                    <div *ngIf="company.imagePath; then exist else notExist"></div>
+                    <ng-template #exist>
+                        <img [src]="company.imagePath" [alt]="company.companyName">
+                    </ng-template>
+                    <ng-template #notExist>
+                        <img src="./assets/images/no-image.png" [alt]="company.companyName">
+                    </ng-template>
+
                     {{ company.companyName}}
                 </mat-panel-title>
 
             </mat-expansion-panel-header>
-
             {{ company.address}}
             <mat-action-row>
-                <a mat-button color="warn" [routerLink]="['/edit', company.id]">Edit</a>
-                <button mat-button color="primary" (click)="onDelete(company.id)">Delete</button>
+                <a mat-stroked-button class="mx-4" color="warn" [routerLink]="['/edit', company.id]">Edit</a>
+                <button mat-stroked-button color="primary" (click)="onDelete(company.id)">Delete</button>
             </mat-action-row>
         </mat-expansion-panel>
     </mat-accordion>

@@ -16,9 +16,5 @@ export class AppComponent implements OnInit {
     this.isLoading = false;
   }
 
-  ngOnInit() {
-    this.configService.isLoading.subscribe((result: boolean) => {
-      this.isLoading = result;
-    })
-  }
+  ngOnInit() { }
 }

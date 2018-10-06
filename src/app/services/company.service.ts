@@ -8,15 +8,13 @@ import { Router } from "@angular/router";
     providedIn: 'root'
 })
 export class CompanyService {
-    company: any[] = [];
+    company: Company[] = [];
     companyModified = new EventEmitter<Company[]>();
 
     constructor(
         private http: HttpClient,
         private router: Router
-    ) {
-        console.log('In company service');
-    }
+    ) { }
 
     getCompanyList() {
         this.http.get('http://localhost:3000/api/companies')
@@ -26,7 +24,8 @@ export class CompanyService {
                         return {
                             id: company._id,
                             companyName: company.companyName,
-                            address: company.address
+                            address: company.address,
+                            imagePath: company.imagePath
                         }
                     })
                 })
@@ -44,13 +43,15 @@ export class CompanyService {
     }
 
     addCompany(companyObject) {
-        const post = { id: null, ...companyObject };
-        this.http.post('http://localhost:3000/api/companies/add', post)
+        let postData = new FormData();
+        postData.append('id', null);
+        postData.append('companyName', companyObject.companyName);
+        postData.append('address', companyObject.address);
+        postData.append('image', companyObject.image);
+
+        this.http.post('http://localhost:3000/api/companies/add', postData)
             .subscribe((response: any) => {
                 if (response.isSuccess) {
-                    post.id = response.id;
-                    this.company.push(post);
-                    this.companyModified.emit(this.company);
                     this.router.navigate(['/']);
                 }
             }, error => {
@@ -59,8 +60,17 @@ export class CompanyService {
     }
 
     udpateCompany(companyObject) {
-        console.log(companyObject);
-        this.http.put('http://localhost:3000/api/companies/' + companyObject.id, companyObject)
+        let postData: Company | FormData;
+        if (companyObject.image !== null && typeof companyObject.image === 'object') {
+            postData = new FormData();
+            postData.append('id', companyObject.id);
+            postData.append('companyName', companyObject.companyName);
+            postData.append('address', companyObject.address);
+            postData.append('image', companyObject.image);
+        } else {
+            postData = { ...companyObject, imagePath: companyObject.image };
+        }
+        this.http.put('http://localhost:3000/api/companies/' + companyObject.id, postData)
             .subscribe((response: any) => {
                 if (response.isSuccess) {
                     console.log(response);
