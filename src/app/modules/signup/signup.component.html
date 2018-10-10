@@ -1,0 +1,24 @@
+<mat-card>
+    <form (submit)="onSignup(signup)" #signup="ngForm">
+        <mat-form-field>
+            <input matInput placeholder="First Name" name="firstname" ngModel #firstName required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Last Name" name="lastname" ngModel #lastName required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Email" name="email" ngModel #email required email>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="password" placeholder="Password" name="password" ngModel #password required>
+        </mat-form-field>
+
+
+        <div class="button-row text-center">
+            <button mat-flat-button color="accent" [disabled]="signup.invalid">Sign-Up</button>
+        </div>
+    </form>
+</mat-card>

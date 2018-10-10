@@ -1,0 +1,15 @@
+<mat-card>
+    <form (submit)="onSignin(signin)" #signin="ngForm">
+        <mat-form-field>
+            <input matInput placeholder="Email" name="email" ngModel #email required email>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="password" placeholder="Password" name="password" ngModel #password required>
+        </mat-form-field>
+
+        <div class="button-row text-center">
+            <button mat-flat-button color="accent" [disabled]="signin.invalid">Sign-In</button>
+        </div>
+    </form>
+</mat-card>

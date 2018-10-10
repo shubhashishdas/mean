@@ -20,6 +20,9 @@ app.use((req, res, next) => {
 
 // Routes Declare Here
 const companyRoutes = require('./routes/company');
+const userRoutes = require('./routes/user');
+
 app.use('/api/companies', companyRoutes);
+app.use('/api/auth', userRoutes);
 
 module.exports = app;
