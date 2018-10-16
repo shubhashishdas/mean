@@ -8,10 +8,11 @@ import { CompanyComponent } from './modules/company/company.component';
 import { MaterialModules } from './common/material.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CompanyListComponent } from './modules/company-list/company-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { SignInComponent } from './modules/sign-in/sign-in.component';
 import { SignupComponent } from './modules/signup/signup.component';
+import { AuthInterceptor } from './common/auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,9 @@ import { SignupComponent } from './modules/signup/signup.component';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

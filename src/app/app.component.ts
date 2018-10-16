@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConfigService } from './services/config.service';
+import { AuthService } from './common/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,13 @@ export class AppComponent implements OnInit {
   isLoading: boolean;
 
   constructor(
-    private configService: ConfigService
+    private configService: ConfigService,
+    private authService: AuthService
   ) {
     this.isLoading = false;
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.authService.checkOnPageLoad();
+  }
 }

@@ -5,16 +5,18 @@
         <span class="spacer"></span>
         <span>
             <ul>
-                <li>
+                <li *ngIf="isAuthenticate">
                     <a mat-button routerLink="/add" routerLinkActive="mat-accent">Add Company</a>
                 </li>
-                <li>
-                    <a mat-button routerLink="/signin" routerLinkActive="mat-accent">Sign In</a>
+                <li *ngIf="!isAuthenticate">
+                    <a mat-button routerLink="/sign-in" routerLinkActive="mat-accent">Sign In</a>
                 </li>
-                <li>
+                <li *ngIf="!isAuthenticate">
                     <a mat-button routerLink="/signup" routerLinkActive="mat-accent">Sign Up</a>
                 </li>
+                <li *ngIf="isAuthenticate">
+                    <a mat-button (click)="logout()">Logout</a>
+                </li>
             </ul>
-        </span>
-    </mat-toolbar-row>
+        </span> </mat-toolbar-row>
 </mat-toolbar>

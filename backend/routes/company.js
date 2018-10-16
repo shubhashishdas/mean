@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Company = require('../Models/Company');
 const multer = require('multer');
+const auth = require('../middleware/authenticate');
+
 const MIME_TYPE_MAP = {
     'image/png': 'png',
     'image/jpeg': 'jpg',
@@ -23,7 +25,7 @@ const storage = multer.diskStorage({
     }
 });
 
-router.get('', (req, res, next) => {
+router.get('', auth, (req, res, next) => {
     const pageSize = +req.query.pageSize;
     const currentPage = +req.query.page;
     const companyQuery = Company.find();
