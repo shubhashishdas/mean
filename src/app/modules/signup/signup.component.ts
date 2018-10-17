@@ -18,17 +18,12 @@ export class SignupComponent implements OnInit {
   }
 
   onSignup(signupForm) {
-    console.log(signupForm);
     if (signupForm.valid) {
       this.authService.signup(signupForm.value).subscribe(
         (response: any) => {
           if (response.isSuccess) {
             this.router.navigate(['/sign-in']);
-            console.log('Successfully signup');
           }
-        },
-        (error) => {
-          console.log(error);
         },
         () => {
           console.log('Final call');
@@ -36,5 +31,4 @@ export class SignupComponent implements OnInit {
       );
     }
   }
-
 }

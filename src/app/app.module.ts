@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SignInComponent } from './modules/sign-in/sign-in.component';
 import { SignupComponent } from './modules/signup/signup.component';
 import { AuthInterceptor } from './common/auth/auth-interceptor';
+import { ErrorInterceptor } from './common/error-interceptor';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { AuthInterceptor } from './common/auth/auth-interceptor';
     AppRoutingModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

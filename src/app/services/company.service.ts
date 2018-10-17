@@ -42,8 +42,6 @@ export class CompanyService {
                         companies: [...this.company]
                     }
                 );
-            }, error => {
-                console.log('Something went wrong');
             });
     }
 
@@ -63,8 +61,6 @@ export class CompanyService {
                 if (response.isSuccess) {
                     this.router.navigate(['/']);
                 }
-            }, error => {
-                console.log('Something went wrong');
             });
     }
 
@@ -82,16 +78,12 @@ export class CompanyService {
         this.http.put('http://localhost:3000/api/companies/' + companyObject.id, postData)
             .subscribe((response: any) => {
                 if (response.isSuccess) {
-                    console.log(response);
                     this.router.navigate(['/']);
                 }
-            }, error => {
-                console.log('Something went wrong');
             });
     }
 
     deleteCompany(companyId: string) {
-        console.log('In delete company function');
         return this.http.delete('http://localhost:3000/api/companies/' + companyId);
     }
 }

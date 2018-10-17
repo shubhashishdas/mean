@@ -49,12 +49,13 @@ router.get('', auth, (req, res, next) => {
         })
 });
 
-router.post('/add', multer({ storage: storage }).single('image'), (req, res, next) => {
+router.post('/add', auth, multer({ storage: storage }).single('image'), (req, res, next) => {
     const baseUrl = req.protocol + '://' + req.get('host');
     const company = new Company({
         companyName: req.body.companyName,
         address: req.body.address,
-        imagePath: baseUrl + '/images/' + req.file.filename
+        imagePath: baseUrl + '/images/' + req.file.filename,
+        creator: req.userData.userId
     });
     company.save()
         .then((data) => {
@@ -65,6 +66,7 @@ router.post('/add', multer({ storage: storage }).single('image'), (req, res, nex
                     companyName: data.companyName,
                     address: data.address,
                     imagePath: data.imagePath,
+                    creator: data.creator
                 }
             });
         })
@@ -74,7 +76,7 @@ router.post('/add', multer({ storage: storage }).single('image'), (req, res, nex
         });
 });
 
-router.get('/:id', (req, res, next) => {
+router.get('/:id', auth, (req, res, next) => {
     let companyId = req.params.id;
     Company.findById(companyId)
         .then((response) => {
@@ -86,7 +88,7 @@ router.get('/:id', (req, res, next) => {
         });
 });
 
-router.put('/:id', multer({ storage: storage }).single('image'), (req, res, next) => {
+router.put('/:id', auth, multer({ storage: storage }).single('image'), (req, res, next) => {
     let imagepath = req.body.imagePath | '';
 
     if (req.file) {
@@ -100,20 +102,27 @@ router.put('/:id', multer({ storage: storage }).single('image'), (req, res, next
         address: req.body.address,
         imagePath: imagePath
     });
-    Company.updateOne({ _id: companyId }, company)
+    Company.updateOne({ _id: companyId, creator: req.userData.userId }, company)
         .then((response) => {
-            res.status(200).json({ isSuccess: true });
+            if (response.n > 0) {
+                res.status(200).json({ isSuccess: true });
+            } else {
+                res.status(401).json({ isSuccess: false, message: 'Unauthorized access' });
+            }
         })
         .catch((error) => {
             res.status(400).json({ isSuccess: false });
         });
 });
 
-router.delete('/:id', (req, res, next) => {
-    Company.deleteOne({ _id: req.params.id })
+router.delete('/:id', auth, (req, res, next) => {
+    Company.deleteOne({ _id: req.params.id, creator: req.userData.userId })
         .then((response) => {
-            console.log(response);
-            res.status(200).json({ isSuccess: true })
+            if (response.n > 0) {
+                res.status(200).json({ isSuccess: true })
+            } else {
+                res.status(401).json({ isSuccess: false, message: 'Unauthorized access' });
+            }
         })
         .catch((error) => {
             res.status(400).json({ isSuccess: false })

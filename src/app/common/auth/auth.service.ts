@@ -31,9 +31,6 @@ export class AuthService {
                     this.router.navigate(['/']);
                 }
             },
-            (error) => {
-                console.log(error);
-            },
             () => {
                 console.log('Final call');
             }

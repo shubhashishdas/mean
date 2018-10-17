@@ -57,7 +57,6 @@ export class CompanyComponent implements OnInit {
     }
 
     addCompany() {
-        console.log(this.companyForm);
         if (this.companyForm.invalid) {
             return;
         }

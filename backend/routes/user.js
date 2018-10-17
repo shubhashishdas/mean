@@ -28,7 +28,6 @@ router.post('/signup', (req, res, next) => {
 });
 
 router.post('/signin', (req, res, next) => {
-    console.log(req.body);
     User.findOne({ email: req.body.email })
         .then(user => {
             if (!user) {
@@ -37,8 +36,6 @@ router.post('/signin', (req, res, next) => {
                     message: "Email address not found"
                 })
             }
-            console.log(user.password);
-
             if (user.password == req.body.password) {
                 return { match: true, user: user }
             } else {
@@ -46,7 +43,6 @@ router.post('/signin', (req, res, next) => {
             }
         })
         .then((response) => {
-            console.log(response);
             if (response.match) {
                 let payload = { email: response.user.email, userId: response.user._id };
                 const token = jwt.sign(
@@ -54,7 +50,7 @@ router.post('/signin', (req, res, next) => {
                     req.app.get('secret'),
                     { expiresIn: '1h' }
                 );
-                res.status(200).json({ isSuccess: true, token: token, expiresIn: 3600 });
+                res.status(200).json({ isSuccess: true, token: "Bearer " + token, expiresIn: 3600, user: response.user });
             } else {
                 res.status(401).json({ isSuccess: false, message: 'Authentication failed' });
             }
