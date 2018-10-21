@@ -12,7 +12,6 @@ export class AppComponent implements OnInit {
   isLoading: boolean;
 
   constructor(
-    private configService: ConfigService,
     private authService: AuthService
   ) {
     this.isLoading = false;

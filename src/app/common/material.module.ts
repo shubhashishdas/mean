@@ -11,12 +11,11 @@ const Modules = [
     MatSnackBarModule
 ]
 @NgModule({
-    imports: [
+    /* imports: [
         Modules
-    ],
+    ], */
     exports: [
         Modules
     ],
-    declarations: [],
 })
 export class MaterialModules { }
