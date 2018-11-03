@@ -14,6 +14,8 @@ import { SignInComponent } from './modules/sign-in/sign-in.component';
 import { SignupComponent } from './modules/signup/signup.component';
 import { AuthInterceptor } from './common/auth/auth-interceptor';
 import { ErrorInterceptor } from './common/error-interceptor';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { ErrorInterceptor } from './common/error-interceptor';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
