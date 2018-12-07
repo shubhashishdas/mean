@@ -6,11 +6,13 @@ const companyController = require('../controllers/CompanyController');
 
 router.get('', auth, companyController.companyList);
 
-router.post('/add', auth, fileUpload, companyController.createCompany);
+// router.post('/add', auth, fileUpload, companyController.createCompany);
+router.post('/add', auth, companyController.createCompany);
 
 router.get('/:id', auth, companyController.getCompany);
 
-router.put('/:id', auth, fileUpload, companyController.updateCompany);
+// router.put('/:id', auth, fileUpload, companyController.updateCompany);
+router.put('/:id', auth, companyController.updateCompany);
 
 router.delete('/:id', auth, companyController.deleteCompany);
 

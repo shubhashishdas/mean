@@ -1,12 +1,12 @@
 <mat-card>
     <form [formGroup]="companyForm" (ngSubmit)="addCompany()">
-        <div>
+        <!-- <div>
             <button mat-stroked-button type="button" (click)="filepicker.click()" color="accent">Upload Logo</button>
             <input type="file" #filepicker (change)="fileUpload($event)">
         </div>
         <div class="image-preview" *ngIf="imagePreview && imagePreview !=='' && companyForm.get('image').valid">
             <img [src]="imagePreview" [alt]="companyForm.value.title">
-        </div>
+        </div> -->
         <mat-form-field>
             <input matInput placeholder="Company Name" formControlName="companyName">
         </mat-form-field>

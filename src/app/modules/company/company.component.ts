@@ -50,9 +50,10 @@ export class CompanyComponent implements OnInit {
     createCompanyForm() {
         this.companyForm = new FormGroup({
             id: new FormControl(null),
-            companyName: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-            address: new FormControl(null, [Validators.required]),
-            image: new FormControl(null, { validators: [Validators.required], asyncValidators: [mimeType] })
+            companyName: new FormControl(null, [Validators.required, Validators.minLength(2)]),
+            address: new FormControl(null),
+            // image: new FormControl(null, { validators: [Validators.required], asyncValidators: [mimeType] })
+            // image: new FormControl(null)
         })
     }
 
@@ -61,7 +62,7 @@ export class CompanyComponent implements OnInit {
             return;
         }
         if (this.mode == 'add') {
-            this.companyService.addCompany({ companyName: this.companyForm.get('companyName').value, address: this.companyForm.get('address').value, image: this.companyForm.get('image').value })
+            this.companyService.addCompany(this.companyForm.value);
         } else {
             this.companyService.udpateCompany(this.companyForm.value);
         }

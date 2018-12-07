@@ -13,7 +13,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(
             catchError((error: HttpErrorResponse) => {
-                let errorMessage = error.error.message;
+                console.log(error);
+                let errorMessage = error.message;
                 this.snackBar.open(errorMessage, '', { duration: 2000 });
                 return throwError(error);
             })

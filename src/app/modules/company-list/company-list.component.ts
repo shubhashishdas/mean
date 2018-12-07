@@ -11,8 +11,8 @@ import { ConfigService } from '../../services/config.service';
 export class CompanyListComponent implements OnInit {
   companies: Company[] = [];
   currentPage: number = 1;
-  pageSize: number = 2;
-  pageSizeOptions: number[] = [1, 2, 5, 10];
+  pageSize: number = 10;
+  pageSizeOptions: number[] = [10, 20, 50, 100];
   totalRecords: number = 0;
   constructor(
     private companyService: CompanyService,

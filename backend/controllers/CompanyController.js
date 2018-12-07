@@ -29,7 +29,7 @@ module.exports.createCompany = (req, res, next) => {
     const company = new Company({
         companyName: req.body.companyName,
         address: req.body.address,
-        imagePath: baseUrl + '/images/' + req.file.filename,
+        // imagePath: baseUrl + '/images/' + req.file.filename,
         creator: req.userData.userId
     });
     company.save()
@@ -40,7 +40,7 @@ module.exports.createCompany = (req, res, next) => {
                     id: data._id,
                     companyName: data.companyName,
                     address: data.address,
-                    imagePath: data.imagePath,
+                    // imagePath: data.imagePath,
                     creator: data.creator
                 }
             });
@@ -58,29 +58,23 @@ module.exports.getCompany = (req, res, next) => {
             res.status(200).json({ isSuccess: true, data: response });
         })
         .catch((error) => {
-            console.log(error);
             res.status(400).json({ isSuccess: false });
         });
 };
 
 module.exports.updateCompany = (req, res, next) => {
-    let imagepath = req.body.imagePath | '';
-
-    if (req.file) {
-        const baseUrl = req.protocol + '://' + req.get('host');
-        imagePath = baseUrl + '/images/' + req.file.filename
-    }
+    // let imagepath = req.body.imagePath | '';
     let companyId = req.params.id;
     const company = new Company({
         _id: req.body.id,
         companyName: req.body.companyName,
         address: req.body.address,
-        imagePath: imagePath
+        // imagePath: imagepath
     });
     Company.updateOne({ _id: companyId, creator: req.userData.userId }, company)
         .then((response) => {
             if (response.n > 0) {
-                res.status(200).json({ isSuccess: true });
+                res.status(200).json({ isSuccess: true, message: 'Record successfully updated.' });
             } else {
                 res.status(401).json({ isSuccess: false, message: 'Unauthorized access' });
             }
@@ -94,7 +88,7 @@ module.exports.deleteCompany = (req, res, next) => {
     Company.deleteOne({ _id: req.params.id, creator: req.userData.userId })
         .then((response) => {
             if (response.n > 0) {
-                res.status(200).json({ isSuccess: true })
+                res.status(200).json({ isSuccess: true, message: 'Company deleted successfully.' });
             } else {
                 res.status(401).json({ isSuccess: false, message: 'Unauthorized access' });
             }

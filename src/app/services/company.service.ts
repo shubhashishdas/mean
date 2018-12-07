@@ -3,11 +3,13 @@ import { Company } from "../models/Company";
 import { HttpClient } from "@angular/common/http";
 import { map } from 'rxjs/operators';
 import { Router } from "@angular/router";
+import { environment } from "src/environments/environment";
 
 @Injectable({
     providedIn: 'root'
 })
 export class CompanyService {
+    private baseUrl = environment.baseUrl;
     company: Company[] = [];
     companyModified = new EventEmitter<{ totalRecords: number, companies: Company[] }>();
 
@@ -18,7 +20,7 @@ export class CompanyService {
 
     getCompanyList(currentPage: number, pageSize: number) {
         const queryParams = `?pageSize=${pageSize}&page=${currentPage}`;
-        this.http.get('http://localhost:3000/api/companies' + queryParams)
+        this.http.get(`${this.baseUrl}companies` + queryParams)
             .pipe(
                 map((response: { isSuccess: boolean, totalRecords: number, data: Company[] }) => {
                     return {
@@ -50,13 +52,7 @@ export class CompanyService {
     }
 
     addCompany(companyObject) {
-        let postData = new FormData();
-        postData.append('id', null);
-        postData.append('companyName', companyObject.companyName);
-        postData.append('address', companyObject.address);
-        postData.append('image', companyObject.image);
-
-        this.http.post('http://localhost:3000/api/companies/add', postData)
+        this.http.post(`${this.baseUrl}companies/add`, companyObject)
             .subscribe((response: any) => {
                 if (response.isSuccess) {
                     this.router.navigate(['/']);
@@ -65,17 +61,7 @@ export class CompanyService {
     }
 
     udpateCompany(companyObject) {
-        let postData: Company | FormData;
-        if (companyObject.image !== null && typeof companyObject.image === 'object') {
-            postData = new FormData();
-            postData.append('id', companyObject.id);
-            postData.append('companyName', companyObject.companyName);
-            postData.append('address', companyObject.address);
-            postData.append('image', companyObject.image);
-        } else {
-            postData = { ...companyObject, imagePath: companyObject.image };
-        }
-        this.http.put('http://localhost:3000/api/companies/' + companyObject.id, postData)
+        this.http.put(`${this.baseUrl}companies/` + companyObject.id, companyObject)
             .subscribe((response: any) => {
                 if (response.isSuccess) {
                     this.router.navigate(['/']);
@@ -84,6 +70,6 @@ export class CompanyService {
     }
 
     deleteCompany(companyId: string) {
-        return this.http.delete('http://localhost:3000/api/companies/' + companyId);
+        return this.http.delete(`${this.baseUrl}/companies/` + companyId);
     }
 }
